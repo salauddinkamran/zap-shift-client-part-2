@@ -7,8 +7,8 @@ const Reviews = ({ reviewPromise }) => {
   const reviews = use(reviewPromise);
   console.log(reviews);
   return (
-    <div className="my-20">
-      <div className="text-center mb-5">
+    <div className="my-24">
+      <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-secondary mb-5">
           What our customers are sayings
         </h3>
@@ -26,11 +26,16 @@ const Reviews = ({ reviewPromise }) => {
           centeredSlides={true}
           slidesPerView={"3"}
           coverflowEffect={{
-            rotate: 150,
-            stretch: 0,
-            depth: 100,
+            rotate: 50,
+            stretch: "50%",
+            depth: 200,
             modifier: 1,
+            scale: .75,
             slideShadows: true,
+          }}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
           }}
           pagination={true}
           modules={[EffectCoverflow, Pagination, Autoplay]}
