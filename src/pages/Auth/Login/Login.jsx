@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth/useAuth";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Login = () => {
   const { signInUser } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log("in the login page", location);
   const {
     register,
     handleSubmit,
@@ -19,7 +21,7 @@ const Login = () => {
     signInUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate('/')
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -83,7 +85,16 @@ const Login = () => {
               </div>
               <button className="btn btn-neutral mt-4">Login</button>
             </fieldset>
-            <p>New to zap shift <Link className="text-blue-400 underline" to="/register">Register</Link></p>
+            <p>
+              New to zap shift{" "}
+              <Link
+                className="text-blue-400 underline"
+                state={location?.state}
+                to="/register"
+              >
+                Register
+              </Link>
+            </p>
           </form>
           <SocialLogin></SocialLogin>
         </div>

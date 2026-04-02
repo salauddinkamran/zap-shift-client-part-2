@@ -15,10 +15,10 @@ const Navbar = () => {
         <NavLink to="/about">About</NavLink>
       </li>
       <li>
-        <NavLink to="/service">Services</NavLink>
+        <NavLink to="/send-parcel">Send parcel</NavLink>
       </li>
       <li>
-        <NavLink to="/contact">Contact</NavLink>
+        <NavLink to="/rider">Rider</NavLink>
       </li>
       <li>
         <NavLink to="/coverage">Coverage</NavLink>
@@ -30,7 +30,7 @@ const Navbar = () => {
     signOutUser()
       .then(() => {
         console.log("Logout Successfuly!");
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -72,12 +72,19 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
-        <div className="navbar-end gap-5">
-          <Link className="btn btn-primary text-black" to="/beARider">Be a Rider</Link>
+        <div className="navbar-end">
           {user ? (
-            <Link onClick={handleLogOut} className="btn btn-primary text-black">
-              LogOut
-            </Link>
+            <div className="flex gap-5">
+              <Link className="btn btn-primary text-black" to="/beARider">
+                Be a Rider
+              </Link>
+              <Link
+                onClick={handleLogOut}
+                className="btn btn-primary text-black"
+              >
+                LogOut
+              </Link>
+            </div>
           ) : (
             <div className="flex gap-5">
               <Link className="btn btn-primary text-black" to="/login">

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth/useAuth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import axios from "axios";
 
 const Register = () => {
-  const { createUser } = useAuth();
+  const { createUser, updateUserProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(null);
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,10 +16,34 @@ const Register = () => {
   } = useForm();
   const handleRegistation = (data) => {
     console.log("After register", data);
+    const profileImg = data.photo[0];
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate("/");
+        const formData = new FormData();
+        formData.append("image", profileImg);
+        const image_API_URL = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_image_host_key
+        }`;
+        axios
+          .post(image_API_URL, formData)
+          .then((res) => {
+            console.log("image url", res);
+            const updateProfile = {
+              displayName: data.name,
+              photoURL: res.data.data.url,
+            };
+            updateUserProfile(updateProfile)
+              .then(() => {
+                console.log("user update done");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -108,7 +132,11 @@ const Register = () => {
             </fieldset>
             <p>
               Already have an account{" "}
-              <Link className="text-blue-400 underline" to="/login">
+              <Link
+                className="text-blue-400 underline"
+                state={location?.state}
+                to="/login"
+              >
                 Login
               </Link>
             </p>

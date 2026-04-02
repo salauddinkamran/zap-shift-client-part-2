@@ -11,3 +11,31 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
+
+
+<!-- const formData = new FormData();
+formData.append("image", profileImg);
+const image_API_URL = `https://api.imgbb.com/1/upload?key=${
+  import.meta.env.VITE_image_host_key
+}`;
+axios
+  .post(image_API_URL, formData)
+  .then((res) => {
+    console.log("After image uplode", res);
+    const updateProfile = {
+      displayName: data.name,
+      photoURL: res.data.data.url,
+    };
+    updateUserProfile(updateProfile)
+      .then(() => {
+        console.log("profile update done");
+        navigate(location?.state || "/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  })
+  .catch((error) => {
+    console.log(error);
+  }); -->
