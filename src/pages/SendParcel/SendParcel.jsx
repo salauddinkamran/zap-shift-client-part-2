@@ -2,14 +2,18 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
+import useAuth from "../../hooks/useAuth/useAuth";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const serviceCenters = useLoaderData();
   const regionDuplicate = serviceCenters.map((c) => c.region);
   const regions = [...new Set(regionDuplicate)];
@@ -42,6 +46,7 @@ const SendParcel = () => {
       }
     }
     console.log("cost", cost);
+    data.cost = cost;
     Swal.fire({
       title: "Agree with the cost",
       text: `You will be charged ${cost} taka!`,
@@ -57,6 +62,9 @@ const SendParcel = () => {
         //   text: "Your file has been deleted.",
         //   icon: "success",
         // });
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("after saving parcel", res.data);
+        });
     });
   };
   return (
@@ -130,6 +138,7 @@ const SendParcel = () => {
             <input
               type="text"
               {...register("senderName")}
+              defaultValue={user?.displayName}
               className="input w-full"
               placeholder="Sender Name"
             />
@@ -138,18 +147,9 @@ const SendParcel = () => {
             <input
               type="email"
               {...register("senderEmail")}
+              defaultValue={user?.email}
               className="input w-full"
               placeholder="Sender Email"
-            />
-            {/* sender district */}
-            <label className="label text-lg font-bold mt-3">
-              Sender District
-            </label>
-            <input
-              type="text"
-              {...register("senderDistrict")}
-              className="input w-full"
-              placeholder="Sender District"
             />
             {/* sender address */}
             <label className="label text-lg font-bold mt-3">
@@ -211,16 +211,6 @@ const SendParcel = () => {
               {...register("receiverEmail")}
               className="input w-full"
               placeholder="Receiver Email"
-            />
-            {/* sender district */}
-            <label className="label text-lg font-bold mt-3">
-              Receiver District
-            </label>
-            <input
-              type="text"
-              {...register("receiverDistrict")}
-              className="input w-full"
-              placeholder="Receiver District"
             />
             {/* sender address */}
             <label className="label text-lg font-bold mt-3">
