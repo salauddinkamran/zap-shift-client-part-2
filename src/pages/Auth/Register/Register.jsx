@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth/useAuth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import axios from "axios";
 
 const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(null);
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -36,6 +37,7 @@ const Register = () => {
             updateUserProfile(updateProfile)
               .then(() => {
                 console.log("user update done");
+                navigate('/')
               })
               .catch((error) => {
                 console.log(error);
