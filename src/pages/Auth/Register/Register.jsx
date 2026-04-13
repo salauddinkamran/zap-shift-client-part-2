@@ -5,22 +5,22 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
 
 const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(null);
   const navigate = useNavigate()
+  const axiosSecure = useAxiosSecure();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const handleRegistation = (data) => {
-    console.log("After register", data);
     const profileImg = data.photo[0];
     createUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
+      .then(() => {
         const formData = new FormData();
         formData.append("image", profileImg);
         const image_API_URL = `https://api.imgbb.com/1/upload?key=${
@@ -29,10 +29,22 @@ const Register = () => {
         axios
           .post(image_API_URL, formData)
           .then((res) => {
-            console.log("image url", res);
+            const photoURL = res.data.data.url;
+            // create user in the database
+            const userInfo = {
+              email: data.email,
+              displayName: data.name,
+              photoURL: photoURL
+            }
+            axiosSecure.post("/users", userInfo)
+              .then(res => {
+                if (res.data.insertedId) {
+                console.log("user created in the database")
+              }
+            })
             const updateProfile = {
               displayName: data.name,
-              photoURL: res.data.data.url,
+              photoURL: photoURL,
             };
             updateUserProfile(updateProfile)
               .then(() => {

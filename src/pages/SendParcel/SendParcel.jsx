@@ -263,7 +263,7 @@ const SendParcel = () => {
           </fieldset>
           {/* receiver info */}
         </div>
-        <input type="submit" className="btn btn-primary text-secondary mt-5" />
+        <input type="submit" className="btn btn-primary text-secondary mt-5" value="Send Parcel" />
       </form>
     </div>
   );
