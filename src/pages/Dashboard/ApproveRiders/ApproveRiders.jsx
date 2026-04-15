@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
-import { FaUserCheck } from "react-icons/fa";
+import { FaEye, FaUserCheck } from "react-icons/fa";
 import { IoPersonRemoveSharp } from "react-icons/io5";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
@@ -38,6 +38,21 @@ const ApproveRiders = () => {
   const handleRejection = (rider) => {
     updateRiderStatus(rider, "rejected");
   };
+
+  const handleRiderDelete = (id) => {
+    axiosSecure.delete(`/riders/${id}`).then((res) => {
+      if (res.data.deletedCount) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Rider request deleted successfuly!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
+  };
   return (
     <div>
       <h2 className="text-5xl font-medium p-3">
@@ -65,16 +80,15 @@ const ApproveRiders = () => {
                 <td>{rider.riderRegion}</td>
                 <td>
                   <p
-                    className={`${
-                      rider.status === "approved"
-                        ? "text-green-800"
-                        : "text-red-800"
-                    }`}
+                    className={`${rider.status === "approved" ? "text-green-800" : "text-red-800"}`}
                   >
                     {rider.status}
                   </p>
                 </td>
                 <td className="flex gap-3">
+                  <button className="btn">
+                    <FaEye />
+                  </button>
                   <button className="btn" onClick={() => handleApproval(rider)}>
                     <FaUserCheck />
                   </button>
@@ -84,7 +98,10 @@ const ApproveRiders = () => {
                   >
                     <IoPersonRemoveSharp />
                   </button>
-                  <button className="btn">
+                  <button
+                    onClick={() => handleRiderDelete(rider._id)}
+                    className="btn"
+                  >
                     <RiDeleteBin6Line />
                   </button>
                 </td>
