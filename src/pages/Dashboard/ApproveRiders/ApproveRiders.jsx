@@ -4,19 +4,40 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
 import { FaUserCheck } from "react-icons/fa";
 import { IoPersonRemoveSharp } from "react-icons/io5";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const ApproveRiders = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: riders = [] } = useQuery({
+  const { data: riders = [], refetch } = useQuery({
     queryKey: ["riders", "pending"],
     queryFn: async () => {
       const res = await axiosSecure.get("/riders");
       return res.data;
     },
   });
-  const handleApproval = id => {
-    console.log(id)
-  }
+
+  const updateRiderStatus = (rider, status) => {
+    const updateInfo = { status: status, email: rider.email };
+    axiosSecure.patch(`/riders/${rider._id}`, updateInfo).then((res) => {
+      if (res.data.modifiedCount) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Rider status is set to ${status}`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        refetch();
+      }
+    });
+  };
+  const handleApproval = (rider) => {
+    updateRiderStatus(rider, "approved");
+  };
+
+  const handleRejection = (rider) => {
+    updateRiderStatus(rider, "rejected");
+  };
   return (
     <div>
       <h2 className="text-5xl font-medium p-3">
@@ -42,15 +63,25 @@ const ApproveRiders = () => {
                 <td>{rider.name}</td>
                 <td>{rider.email}</td>
                 <td>{rider.riderRegion}</td>
-                <td>{rider.status}</td>
-                <td className="flex gap-3">
-                  <button
-                    className="btn"
-                    onClick={() => handleApproval(rider._id)}
+                <td>
+                  <p
+                    className={`${
+                      rider.status === "approved"
+                        ? "text-green-800"
+                        : "text-red-800"
+                    }`}
                   >
+                    {rider.status}
+                  </p>
+                </td>
+                <td className="flex gap-3">
+                  <button className="btn" onClick={() => handleApproval(rider)}>
                     <FaUserCheck />
                   </button>
-                  <button className="btn">
+                  <button
+                    onClick={() => handleRejection(rider)}
+                    className="btn"
+                  >
                     <IoPersonRemoveSharp />
                   </button>
                   <button className="btn">
