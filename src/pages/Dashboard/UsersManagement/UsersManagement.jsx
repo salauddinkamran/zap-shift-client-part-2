@@ -3,16 +3,51 @@ import React from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
 import { FaUserShield } from "react-icons/fa6";
 import { FiShieldOff } from "react-icons/fi";
+import Swal from "sweetalert2";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: users = [] } = useQuery({
+  const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users`);
       return res.data;
     },
   });
+
+  const handleMakeAdmin = (user) => {
+    const roleInfo = { role: "admin" };
+    axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
+      console.log(res.data);
+      if (res.data.modifiedCount) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user.displayName} marked as an Admin`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
+  };
+
+  const handleRemoveAdmin = (user) => {
+    const roleInfo = { role: "user" };
+    axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
+      console.log(res.data);
+      if (res.data.modifiedCount) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user.displayName} removed form Admin`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
+  };
   return (
     <div>
       <h2 className="text-5xl font-medium">Users Management: {users.length}</h2>
@@ -57,20 +92,32 @@ const UsersManagement = () => {
                   </span>
                 </td>
                 <td
-                  className={`${user.role === "rider" ? "text-green-800 font-bold" : "text-red-800"}`}
+                  className={`${
+                    user.role === "rider"
+                      ? "text-green-800 font-bold"
+                      : "text-red-800"
+                  }`}
                 >
+                  {user.role}
+                </td>
+                <td>
                   {user.role === "admin" ? (
-                    <button className="btn">
-                      
+                    <button
+                      onClick={() => handleRemoveAdmin(user)}
+                      className="btn bg-red-400 text-white"
+                    >
                       <FiShieldOff />
                     </button>
                   ) : (
-                    <button className="btn">
+                    <button
+                      onClick={() => handleMakeAdmin(user)}
+                      className="btn bg-green-400 text-white"
+                    >
                       <FaUserShield />
                     </button>
                   )}
                 </td>
-                <td></td>
+
                 <td>
                   <button className="btn btn-ghost btn-xs">details</button>
                 </td>
