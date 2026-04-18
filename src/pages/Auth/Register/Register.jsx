@@ -10,7 +10,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
 const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const {
     register,
@@ -34,14 +34,13 @@ const Register = () => {
             const userInfo = {
               email: data.email,
               displayName: data.name,
-              photoURL: photoURL
-            }
-            axiosSecure.post("/users", userInfo)
-              .then(res => {
-                if (res.data.insertedId) {
-                console.log("user created in the database")
+              photoURL: photoURL,
+            };
+            axiosSecure.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("user created in the database");
               }
-            })
+            });
             const updateProfile = {
               displayName: data.name,
               photoURL: photoURL,
@@ -49,7 +48,7 @@ const Register = () => {
             updateUserProfile(updateProfile)
               .then(() => {
                 console.log("user update done");
-                navigate('/')
+                navigate("/");
               })
               .catch((error) => {
                 console.log(error);

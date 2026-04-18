@@ -66,7 +66,8 @@ const ApproveRiders = () => {
               <th>No</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Status</th>
+              <th>Application Status</th>
+              <th>Work Status</th>
               <th>District</th>
               <th>Actions</th>
             </tr>
@@ -85,6 +86,7 @@ const ApproveRiders = () => {
                     {rider.status}
                   </p>
                 </td>
+                <td>{ rider.workStatus}</td>
                 <td className="flex gap-3">
                   <button className="btn">
                     <FaEye />

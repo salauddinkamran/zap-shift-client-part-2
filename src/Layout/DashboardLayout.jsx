@@ -1,9 +1,10 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaCreditCard, FaUsers } from "react-icons/fa";
+import { FaCreditCard, FaTasks, FaUsers } from "react-icons/fa";
 import { MdDirectionsBike } from "react-icons/md";
 import { Link, Outlet } from "react-router";
 import useRole from "../hooks/useRole/useRole";
+import { RiEBike2Line } from "react-icons/ri";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -97,6 +98,26 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Payment History</span>
               </Link>
             </li>
+
+            {role === "rider" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/assigned-deliveries"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assigned Deliveries"
+                  >
+                    {/* my-parcels icon */}
+                    <FaTasks className="text-lg" />
+                    <span className="is-drawer-close:hidden">
+                      Assigned Deliveries
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* Admin onli links */}
             {role === "admin" && (
               <>
                 <li>
@@ -109,6 +130,19 @@ const DashboardLayout = () => {
                     <MdDirectionsBike className="text-lg" />
                     <span className="is-drawer-close:hidden">
                       Approve Riders
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/assign-riders"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assign Riders"
+                  >
+                    {/* my-parcels icon */}
+                    <RiEBike2Line className="text-lg" />
+                    <span className="is-drawer-close:hidden">
+                      Assigns Riders
                     </span>
                   </Link>
                 </li>
