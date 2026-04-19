@@ -5,6 +5,7 @@ import { MdDirectionsBike } from "react-icons/md";
 import { Link, Outlet } from "react-router";
 import useRole from "../hooks/useRole/useRole";
 import { RiEBike2Line } from "react-icons/ri";
+import { SiGoogletasks } from "react-icons/si";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -111,6 +112,19 @@ const DashboardLayout = () => {
                     <FaTasks className="text-lg" />
                     <span className="is-drawer-close:hidden">
                       Assigned Deliveries
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/completed-deliveries"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Completed Deliveries"
+                  >
+                    {/* my-parcels icon */}
+                    <SiGoogletasks className="text-lg" />
+                    <span className="is-drawer-close:hidden">
+                      Completed Deliveries
                     </span>
                   </Link>
                 </li>
