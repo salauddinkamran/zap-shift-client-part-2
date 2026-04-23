@@ -12,10 +12,7 @@ const Navbar = () => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/about">About</NavLink>
-      </li>
-      <li>
-        <NavLink to="/send-parcel">Send parcel</NavLink>
+        <NavLink to="/send-parcel">Send A parcel</NavLink>
       </li>
       <li>
         <NavLink to="/rider">Rider</NavLink>
@@ -28,8 +25,14 @@ const Navbar = () => {
           <li>
             <NavLink to="/dashboard/my-parcels">My-Parcels</NavLink>
           </li>
+          <li>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+          </li>
         </>
       )}
+      <li>
+        <NavLink to="/about">About us</NavLink>
+      </li>
     </>
   );
 
@@ -73,7 +76,6 @@ const Navbar = () => {
             </ul>
           </div>
           <span className="btn btn-ghost text-xl">
-
             <Logo></Logo>
           </span>
           {/* <a className="btn btn-ghost text-xl">

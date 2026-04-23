@@ -1,14 +1,23 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { FaCreditCard, FaTasks, FaUsers } from "react-icons/fa";
-import { MdDirectionsBike } from "react-icons/md";
+import { MdDirectionsBike, MdLogout } from "react-icons/md";
 import { Link, Outlet } from "react-router";
 import useRole from "../hooks/useRole/useRole";
 import { RiEBike2Line } from "react-icons/ri";
 import { SiGoogletasks } from "react-icons/si";
+import logo from "../assets/logo.png";
+import { CgProfile } from "react-icons/cg";
+import useAuth from "../hooks/useAuth/useAuth";
 
 const DashboardLayout = () => {
   const { role } = useRole();
+  const { signOutUser } = useAuth();
+  const handleLogoutUser = () => {
+    signOutUser().then(() => {
+      console.log("logout successfully!");
+    });
+  };
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -53,8 +62,13 @@ const DashboardLayout = () => {
           <ul className="menu w-full grow">
             {/* List item */}
             <li>
+              <Link to="/">
+                <img src={logo} alt="" />
+              </Link>
+            </li>
+            <li>
               <Link
-                to="/"
+                to="/dashboard"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
@@ -202,6 +216,33 @@ const DashboardLayout = () => {
               </button>
             </li>
           </ul>
+          <div>
+            <ul className="menu w-full grow">
+              <li>
+                <Link
+                  to="/dashboard/profile"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Profile"
+                >
+                  {/* my-parcels icon */}
+                  <CgProfile className="text-lg" />
+                  <span className="is-drawer-close:hidden">Profile</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  // to="/dashboard/profile"
+                  onClick={handleLogoutUser}
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Logout"
+                >
+                  {/* my-parcels icon */}
+                  <MdLogout className="text-lg" />
+                  <span className="is-drawer-close:hidden">Logout</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
