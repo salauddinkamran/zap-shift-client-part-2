@@ -1,6 +1,7 @@
 import React from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { Pie, PieChart } from "recharts";
 
 const AdminDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
@@ -11,6 +12,11 @@ const AdminDashboardHome = () => {
       return res.data;
     },
   });
+  const getPieChartData = (data) => {
+    return data.map((item) => {
+      return { name: item.status, value: item.count };
+    });
+  };
   return (
     <div className="">
       <h2 className="text-5xl font-bold">Admin DashboardHome</h2>
@@ -37,6 +43,31 @@ const AdminDashboardHome = () => {
             <div className="stat-desc">Jan 1st - Feb 1st</div>
           </div>
         ))}
+      </div>
+      <div className="w-full h-[400px]">
+        <PieChart
+          style={{
+            width: "100%",
+            maxWidth: "500px",
+            maxHeight: "80vh",
+            aspectRatio: 2,
+          }}
+          responsive
+        >
+          <Pie
+            dataKey="value"
+            startAngle={180}
+            endAngle={0}
+            data={getPieChartData(deliveryStats)}
+            cx="50%"
+            cy="100%"
+            outerRadius="120%"
+            fill="#8884d8"
+            label
+            isAnimationActive={true}
+          />
+          <RechartsDevtools />
+        </PieChart>
       </div>
     </div>
   );

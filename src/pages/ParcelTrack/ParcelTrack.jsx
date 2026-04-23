@@ -39,7 +39,6 @@ const ParcelTrack = () => {
             </div>
             <div className="timeline-end timeline-box">
               <span className="text-lg">{log.details}</span>
-              
             </div>
             <hr />
           </li>
