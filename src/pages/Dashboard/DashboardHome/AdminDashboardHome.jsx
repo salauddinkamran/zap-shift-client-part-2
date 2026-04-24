@@ -1,7 +1,8 @@
 import React from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { Pie, PieChart } from "recharts";
+import { Legend, Pie, PieChart, Tooltip } from 'recharts';
+// import { RechartsDevtools } from '@recharts/devtools';
 
 const AdminDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
@@ -66,7 +67,8 @@ const AdminDashboardHome = () => {
             label
             isAnimationActive={true}
           />
-          <RechartsDevtools />
+          <Legend></Legend>
+          <Tooltip></Tooltip>
         </PieChart>
       </div>
     </div>
